@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>No value!</strong> You should check in on some of those fields below.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="content-section">
+        <div class="headers">
+            <img class="rounded-circle article-img" src="{{ url_for('img', path='/download.png') }}" alt="">
+            <h2>Youtube Search</h2>
+            <button class="btn btn-primary" id="clear_results">Clear Results</button>
+        </div>
+
+        <div class="navigation">
+
+            {% block navigation %}
+            {% endblock %}
+
+        </div>
+
+        <div class="input-icons">
+            {% block inputs %}{% endblock %}
+        </div>
+    </div>
+
+    <div class="results">
+        
+    </div>
+{% endblock %}

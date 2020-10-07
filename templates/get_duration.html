@@ -1,0 +1,85 @@
+{% extends "index.html" %}
+
+{% block navigation %}
+    
+    <button class="navigate-section"><a href="{{ request.url_for('get_the_page') }}">Get Details</a></button>
+    <button class="navigate-section"><a href="{{ request.url_for('index') }}">Get PlayList</a></button>
+    <button class="navigate-section"><a href="{{ request.url_for('playlist_video') }}">Video Details</a></button>
+    <button class="navigate-section"><a href="{{ request.url_for('playlist_duration') }}" style="text-decoration:underline;">Get Duration</a></button>
+
+{% endblock %}
+
+
+{% block inputs %}
+        
+    <button id="search"><i class="fas fa-search"></i></button>
+    <input type="text" class="input-field">
+
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function (){
+            const alert_div = document.querySelector('.alert')
+            alert_div.setAttribute("style", "display:none;")
+
+        })
+
+        document.querySelector('#search').addEventListener('click', function(){
+            const client_input = document.querySelector('.input-field').value;
+
+            if (client_input){
+                const baseURL = `http://${document.domain}:${location.port}/get_duration?`
+
+
+                const requestURL = baseURL + new URLSearchParams({
+                    service_name:"youtube",
+                    version:"v3",
+                    api_key:"AIzaSyCnFh303loltfwQVvlJfzRECZupxY0z6Bw",
+                })
+
+                var videos = {
+                    videos:["XFZRVnP-MTU","Ercd-Ip5PfQ","_LWjaAiKaf8","zZZ_RCwp49g","XDv6T4a0RNc","x0Uguu7gqgk","UO98lJQ3QGI","nKxLfUrkLE8","MPiz50TsyF0","xN-Supd4H38","x0Uguu7gqgk"]
+                }
+
+                let myInit = {
+                    method:"PUT",
+                    body:JSON.stringify(videos)
+                }
+
+                fetch(requestURL, myInit).then(function (response){
+                    return response.json()
+                }).then(function (data){
+                    const container_result = document.querySelector('.results')
+
+                    const hours = document.createElement('div')
+                    const minutes = document.createElement('div')
+                    const seconds = document.createElement('div')
+
+                    hours.innerHTML = `
+                        <h3>Hours</h3>
+                        <h5>${data['Hours']}</h5>
+                    `
+                    minutes.innerHTML = `
+                        <h3>Minutes</h3>
+                        <h5>${data['Minutes']}</h5>
+                    `
+                    seconds.innerHTML = `
+                        <h3>Seconds</h3>
+                        <h5>${data['Seconds']}</h5>
+                    `
+
+                    container_result.appendChild(hours)
+                    container_result.appendChild(minutes)
+                    container_result.appendChild(seconds)
+                    
+                })
+
+            }else{
+                const alert_div = document.querySelector('.alert')
+                alert_div.setAttribute("style", "display:block;")
+            }
+
+        })
+    </script>
+{% endblock %}

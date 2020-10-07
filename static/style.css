@@ -1,0 +1,142 @@
+h2{
+    color: black;
+}
+
+.content-section{
+    background: #ffffff;
+    padding: 10px 20px;
+    border: 1px solid #dddddd;
+    border-radius: 3px;
+    margin-bottom: 20px;
+    width:650px;
+    margin:0 auto;
+    margin-top: 1rem;
+}
+
+.article-img{
+    height: 40px;
+    width: 40px;
+    margin-right: 16px;
+}
+
+.headers{
+    display: flex;
+}
+
+#clear_results{
+    margin-left: 10rem;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.input-icons button {
+    position: absolute;
+
+}
+
+.input-icons{
+    width: 100%;
+    margin-bottom: 10px;
+    margin-top: 1rem;
+}
+
+#search{
+    padding: 10px;
+    margin-top: 1px;
+    min-width: 40px;
+    border: none;
+    background: transparent;
+}
+
+.input-field{
+    width: 100%;
+    padding: 10px;
+    text-align: center;
+}
+
+.input-field:focus{
+    box-shadow: 0 10px 10px rgba(0, 100, 200, 1);
+}
+
+.navigation {
+    display: flex;
+    margin-top: 1rem;
+    justify-content: space-evenly;
+}
+
+.navigate-section{
+    border: none;
+    background: transparent;
+}
+
+a{
+    color:black;
+    font-weight: bold;
+}
+
+a:hover{
+    color: red;
+    text-decoration: none;
+}
+
+.alert{
+    text-align: center;
+    margin:0 auto;
+    width: 50%;
+}
+
+.results{
+    margin-top: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.video{
+    background-color: #373b69;
+    border-radius: 3px;
+    box-shadow: 0 4px 5px rgba(0, 0, 0, 0.2);
+    width: 300px;
+    overflow: hidden;
+    margin: 1rem;
+    position: relative;
+
+}
+
+.video img{
+    width: 100%;
+}
+
+.video-info{
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 1rem 1rem;
+    color: #eeeeee;
+    letter-spacing: 1px;
+    align-items: center;
+}
+
+.video-info h6{
+    margin: 0;
+}
+
+.overview{
+    background-color: #ffffff;
+    padding: 2rem;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    transform: translateY(100%);
+    transition: transform 0.3s ease-in;
+    max-height: 100%;
+    display: flex;
+    flex-direction: column;
+
+}
+
+.overview-info{
+    font-weight: bold;
+}
+.video:hover .overview{
+    transform: translateY(0);
+}

@@ -1,0 +1,119 @@
+{% extends "index.html" %}
+
+{% block navigation %}
+    
+    <button class="navigate-section"><a href="{{ request.url_for('get_the_page') }}">Get Details</a></button>
+    <button class="navigate-section"><a href="{{ request.url_for('index') }}" style="text-decoration: underline;">Get PlayList</a></button>
+    <button class="navigate-section"><a href="{{ request.url_for('playlist_video') }}">Video Details</a></button>
+    <button class="navigate-section"><a href="{{ request.url_for('playlist_duration') }}">Get Duration</a></button>
+
+{% endblock %}
+
+{% block inputs %}
+
+    <button id="search"><i class="fas fa-search"></i></button>
+    <input type="text" class="input-field">
+{% endblock %}
+
+{% block scripts %}
+
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function (){
+            const alert_div = document.querySelector('.alert')
+            alert_div.setAttribute("style", "display:none;")
+
+        })
+        
+        
+        function sleep(ms){
+            return new Promise(resolve => setTimeout(resolve, ms))
+        }
+
+        document.getElementById('search').addEventListener('click', function (){
+
+            const client_input = document.querySelector('.input-field').value;
+
+            if (client_input){
+
+                const baseURL = `http://${document.domain}:${location.port}/get_playlist?`
+
+                const requestURL = baseURL + new URLSearchParams({
+                    service_name:"youtube",
+                    version:"v3",
+                    api_key:"AIzaSyCnFh303loltfwQVvlJfzRECZupxY0z6Bw"
+                })
+
+                // console.log(requestURL)
+            
+                fetch(requestURL).then(function (response){
+                    return response.json()
+                }).then(async function (data){
+
+                    const container_result = document.querySelector('.results')
+
+                    for (const [key, value] of Object.entries(Object.values(data)[0])){
+    
+                        const card = document.createElement('div')
+                        const img = document.createElement('img')
+                        const card_body = document.createElement('div')
+                        const card_title = document.createElement('h5')
+                        const card_text = document.createElement('p')
+                        const published_at = document.createElement('h6')
+                        const btn = document.createElement('a')
+
+                        published_at.textContent = `Published In ${value['publishedAt']}`
+
+                        card.setAttribute("class", "card")
+                        card.setAttribute("style", "width:18rem;")
+
+                        img.setAttribute("class", "card-img-top")
+                        img.setAttribute("src", `${value['thumbnail']}`)
+
+                        card_body.setAttribute("class", "card-body")
+
+                        card_title.setAttribute("class", "card-title")
+                        card_title.textContent = `${value['channelTitles']}`
+
+                        card_text.setAttribute("class","card-text")
+                        card_text.textContent = `${value['Description']}`
+
+                        btn.setAttribute("class", "btn btn-primary")
+                        btn.textContent = 'Show List of Videos'
+
+
+                        card_body.appendChild(card_title)
+                        card_body.appendChild(published_at)
+                        card_body.appendChild(card_text)
+                        card_body.appendChild(btn)
+
+                        card.appendChild(img)
+                        card.appendChild(card_body)
+
+                        container_result.appendChild(card)
+
+                        await sleep(1000)
+                    }
+                })
+
+            }else{
+            
+                const alert_div = document.querySelector('.alert')
+                alert_div.setAttribute("style", "display:block;")
+
+            }
+
+        })
+
+        document.querySelector('#clear_results').addEventListener('click', function(){
+            const container_result = document.querySelector('.results')
+
+            const card_list = document.querySelectorAll('.card')
+
+            for (let i =0; i<card_list.length; i++){
+                card_list[i].remove();
+            }
+        })
+    </script>
+    
+{% endblock %}

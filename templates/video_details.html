@@ -1,0 +1,94 @@
+{% extends "index.html" %}
+
+{% block navigation %}
+    
+    <button class="navigate-section"><a href="{{ request.url_for('get_the_page') }}">Get Details</a></button>
+    <button class="navigate-section"><a href="{{ request.url_for('index') }}">Get PlayList</a></button>
+    <button class="navigate-section"><a href="{{ request.url_for('playlist_video') }}" style="text-decoration:underline;">Video Details</a></button>
+    <button class="navigate-section"><a href="{{ request.url_for('playlist_duration') }}">Get Duration</a></button>
+
+{% endblock %}
+
+{% block inputs %}
+        
+    <button id="search"><i class="fas fa-search"></i></button>
+    <input type="text" class="input-field">
+
+{% endblock %}
+
+{% block scripts %}
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function (){
+            const alert_div = document.querySelector('.alert')
+            alert_div.setAttribute("style", "display:none;")
+
+        })
+
+        function sleep(ms){
+            return new Promise(resolve => setTimeout(resolve, ms))
+        }
+
+        document.querySelector('#search').addEventListener('click', async function(){
+            const client_input = document.querySelector('.input-field').value;
+
+            if (client_input){
+                const baseURL = `http://${document.domain}:${location.port}/video_details?`
+                
+                const requestURL = baseURL + new URLSearchParams({
+                    service_name:"youtube",
+                    version:"v3",
+                    api_key:"AIzaSyCnFh303loltfwQVvlJfzRECZupxY0z6Bw"
+                })
+
+                let myInit = {
+                    method:"PUT"
+                }
+
+                fetch(requestURL, myInit).then(function (response){
+                    return response.json()
+                }).then(function (data){
+                    
+                    const container_result = document.querySelector('.results')
+
+                    for (const [key, value] of Object.entries(Object.values(data)[0])){
+                        
+                        const container = document.createElement('div')
+                        container.classList.add('video')
+
+                        container.innerHTML = `
+                            <img src="${value['Thumbnail']}" alt="${value['videoId']}">
+                            <div class="video-info">
+                                <h6>${value['Title']}</h6>
+                            </div>
+                            <div class="overview">
+                                <h6 class="overview-info">Video ID: ${value['videoId']}</h6>
+                                <h6 class="overview-info">Published At: ${value['videoPublishedAt']}</h6>
+                            </div>
+                        `
+                        await sleep(1000)
+                        
+                        container_result.appendChild(container)
+                    }
+                })
+
+
+            }else{
+                const alert_div = document.querySelector('.alert')
+                alert_div.setAttribute("style", "display:block;")
+            }
+        })
+
+        document.querySelector('#clear_results').addEventListener('click', function(){
+            const container_result = document.querySelector('.results')
+
+            const card_list = document.querySelectorAll('.video')
+
+            for (let i =0; i<card_list.length; i++){
+                card_list[i].remove();
+            }
+
+        })
+
+    </script>
+{% endblock %}
